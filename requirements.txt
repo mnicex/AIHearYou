@@ -1,0 +1,4 @@
+sounddevice==0.4.7
+webrtcvad==2.0.10
+azure-cognitiveservices-speech==1.41.1
+numpy==2.0.2
