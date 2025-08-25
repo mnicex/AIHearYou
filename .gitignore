@@ -1,4 +1,5 @@
 # Visual Studio per-user files
+env/
 .vs/
 *.user
 *.suo
