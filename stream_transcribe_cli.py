@@ -1,8 +1,11 @@
-
 #!/usr/bin/env python3
 # Simple POC for recording audio from BT device, detect pauses, call transcript and display results.
 #
 # 1st version 23.8. mikan (with help Github Copilot!)
+# 2nd version 25.6. mikan (refactored, added Azure STT) - First tests OK!!!!
+# Requires: pip install sounddevice webrtcvad azure-cognitiveservices-speech numpy
+# Tested with Python 3.8+
+# 
 
 import argparse
 import os
@@ -192,7 +195,17 @@ def transcribe_azure_wav_bytes(
         result = recognizer.recognize_once_async().get()
 
         if result.reason == speechsdk.ResultReason.RecognizedSpeech:
-            return result.text, result.duration.total_seconds() if hasattr(result, "duration") else None
+            # Azure returns duration as 100-ns ticks (int). Convert to seconds.
+            dur_sec: Optional[float] = None
+            try:
+                dur = result.duration
+                if isinstance(dur, (int, float)):
+                    dur_sec = float(dur) / 10_000_000.0
+                elif hasattr(dur, "total_seconds"):
+                    dur_sec = float(dur.total_seconds())  # just in case SDK changes
+            except Exception:
+                dur_sec = None
+            return result.text, dur_sec
         elif result.reason == speechsdk.ResultReason.NoMatch:
             return "", None
         else:
