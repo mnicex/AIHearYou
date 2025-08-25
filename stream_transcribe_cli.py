@@ -2,7 +2,7 @@
 # Simple POC for recording audio from BT device, detect pauses, call transcript and display results.
 #
 # 1st version 23.8. mikan (with help Github Copilot!)
-# 2nd version 25.6. mikan (refactored, added Azure STT) - First tests OK!!!!
+# 2nd version 25.6. mikan (refactored, added Azure STT) - First tests OK!!!
 # Requires: pip install sounddevice webrtcvad azure-cognitiveservices-speech numpy
 # Tested with Python 3.8+
 # 
